@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/mobileManager.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrap">
+        <%- include('./common/main-left.ejs',{nickname:nickname,isAdmin:isAdmin}) %>
+        <div class="main-right">
+            <%- include('./common/r-header.ejs' , {isAdmin:isAdmin}) %>
+            <div class="r-main">
+                <div class="tab">
+                    <!-- <form action="/users/userSeek" id="seek" method="GET">
+                        <input type="text" name="username" placeholder="请通过用户名查找">
+                        <button type="submit">搜索</button>
+                    </form> -->
+                    <button class="addMobile">新增手机</button>
+                    <table class="table-striped" style="border:1px solid #f6f6f6">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>图片</th>
+                                <th>手机名称</th>
+                                <th>所属品牌</th>
+                                <th>官方指导价</th>
+                                <th>二手回收价</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ttab">
+                            <!-- <tr>
+                                <td>1</td>
+                                <td><img src="/images/ipone.jpg" alt="" width="100px"></td>
+                                <td>苹果 iPhone XS Max</td>
+                                <td>苹果</td>
+                                <td>￥ 18000</td>
+                                <td>￥ 12000</td>
+                                <td>
+                                    <a href="#" class="gai">修改</a>
+                                    <a href="#">删除</a>
+                                </td>
+                            </tr> -->
+                           
+                        </tbody>
+                    </table>
+                    <ul class="pageNum">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="cloth updata">
+            <div class="upData">
+                <form action="/mobile/upData" method="POST">
+                    <!-- enctype:规定表单提交时的编码类型 -->
+                    <div class="phoneName">
+                        <label>手机名称</label>
+                        <input type="text" name="phoneName">
+                    </div>
+                    <div class="brand">
+                        <label>所属品牌</label>
+                        <select name="brand" id='upData_sele'>
+                        </select>
+                    </div>
+                    <div class="QA_price">
+                        <label>官方指导价</label>
+                        <input type="text" name="QA_price">
+                    </div>
+                    <div class="Sec_price">
+                        <label>二手回收价</label>
+                        <input type="text" name="Sec_price">
+                    </div>
+                    <input type="text" name="id" id="Id" style="display:none">
+                    <div class="me_btn">
+                        <button type="submit">确认修改</button>
+                        <button type="button" class="exit">退出</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="cloth add">
+            <div class="upData">
+                <form action="/mobile/addData" method="POST" enctype="multipart/form-data">
+                    <!-- enctype:规定表单提交时的编码类型 -->
+                    <div class="phoneName">
+                        <label>手机名称</label>
+                        <input type="text" name="phoneName">
+                    </div>
+                    <div class="brand">
+                        <label>所属品牌</label>
+                        <!-- <input type="text" name="brand"> -->
+                        <select name="brand" id='addData_sele'>
+                        </select>
+                    </div>
+                    <div class="QA_price">
+                        <label>官方指导价</label>
+                        <input type="text" name="QA_price">
+                    </div>
+                    <div class="Sec_price">
+                        <label>二手回收价</label>
+                        <input type="text" name="Sec_price">
+                    </div>
+                    <div class="phoneImg">
+                        <label style="float:left">图片</label>
+                        <input type="file" name="phoneImg" style="outline:none">
+                    </div>
+                    <input type="text" name="id" id="Id" style="display:none">
+                    <div class="me_btn">
+                        <button type="submit">新增手机</button>
+                        <button type="button" class="exit">退出</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+<script src="/js/jquery.min.js"></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.main-left ul li:eq(2) a').css('background', '#202F41');
+        $('.gai').click(function () {
+            $('.updata').show();
+        });
+        $('.addMobile').click(function () {
+            $('.add').show();
+        });
+        $('.exit').click(function () {
+            $('.cloth').hide();
+        });
+        var pageSize = 3;
+        // console.log(location.search);
+        var str = location.search.split('?')[1]
+        // var page = str.split('=')[1];
+        var page = str ? parseInt(str.split('=')[1]) : 1;
+        $.post('/mobile/list',{page: page,pageSize:3},function(res){
+            // console.log(res);
+            // var totalPage = Math.ceil(res.length / pageSize);
+            var html = "";
+            for(var i = 0 ; i < res[0].length ;i++){
+                html += ` <tr>
+                                <td>${res[0][i]._id}</td>
+                                <td><img src="/mobiles/${res[0][i].src}" alt="" width="100px"></td>
+                                <td>${res[0][i].phoneName}</td>
+                                <td>${res[0][i].brand}</td>
+                                <td>￥ ${res[0][i].QA_price}</td>
+                                <td>￥ ${res[0][i].Sec_price}</td>
+                                <td>
+                                    <a href="javasrcipt:;" class="gai">修改</a>
+                                    <a href="javasrcipt:;" class='dele'>删除</a>
+                                </td>
+                            </tr>`;
+            }
+            var li = '';
+            var totalPage = Math.ceil(res[1] / pageSize);
+            // console.log(totalPage);
+            for(var i = 0 ; i < totalPage ; i++){
+                li += `<li><a href="/mobileManager?page=${i+1}">${i+1}</a></li>`
+            }
+            $('.pageNum').html(li);
+            $('#ttab').html(html);
+            $('.gai').click(function () {
+                var id = $(this).parents('tr').children().eq(0).text().trim();
+                var phoneName = $(this).parents('tr').children().eq(2).text().trim();
+                var brand = $(this).parents('tr').children().eq(3).text().trim();
+                var QA_price = $(this).parents('tr').children().eq(4).text();
+                QA_price = QA_price.replace(/\￥/g,'').trim();
+                var Sec_price = $(this).parents('tr').children().eq(5).text();
+                Sec_price = Sec_price.replace(/\￥/g, '').trim();
+                $('#Id').val(id);
+                $('.phoneName input').val(phoneName);
+                $('.QA_price input').val(QA_price);
+                $('.Sec_price input').val(Sec_price);
+                $('.updata').show();
+            });
+            $('.dele').click(function(){
+                var dele =confirm('确认删除？');
+                if(dele){
+                    var id = $(this).parents('tr').children().eq(0).text().trim();
+                    // console.log(id);
+                    $(this).attr('href', `/mobile/dele?id=${id}`);
+                }
+            });
+        });
+        $.ajax({
+            type:'post',
+            url:'/mobile/brandsData',
+            success : function(res){
+                console.log(res);
+                var option = '';
+                var arr = [];
+                for(var i = 0 ; i < res.length ; i++){
+                    if(arr.indexOf(res[i].brand) == -1){
+                        arr.push(res[i].brand);
+                        option += `
+                        <option value="${res[i].brand}">${res[i].brand}</option>
+                    `;
+                    }
+                     
+                }
+                $('#upData_sele').html(option);
+                $('#addData_sele').html(option);
+            }
+        });
+
+    });
+</script>

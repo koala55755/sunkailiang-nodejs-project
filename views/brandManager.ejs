@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/brandManager.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrap">
+        <%- include('./common/main-left.ejs',{nickname:nickname,isAdmin:isAdmin}) %>
+        <div class="main-right">
+            <%- include('./common/r-header.ejs' , {isAdmin:isAdmin}) %>
+            <div class="r-main">
+                <div class="tab">
+                    <!-- <form action="/users/userSeek" id="seek" method="GET">
+                                        <input type="text" name="username" placeholder="请通过用户名查找">
+                                        <button type="submit">搜索</button>
+                                    </form> -->
+                    <button class="addBrand">新增品牌</button>
+                    <table class="table-striped" style="border:1px solid #f6f6f6">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>logo</th>
+                                <th>品牌</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ttab">
+                            
+                
+                        </tbody>
+                    </table>
+                    <ul class="pageNum">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="cloth add">
+            <div class="upData">
+                <form action="/brand/addData" method="POST" enctype="multipart/form-data">
+                    <!-- enctype:规定表单提交时的编码类型 -->
+                    <div class="brand">
+                        <label>品牌</label>
+                        <input type="text" name="brand">
+                    </div>
+                    <div class="phoneImg">
+                        <label style="float:left">图片</label>
+                        <input type="file" name="phoneImg" style="outline:none">
+                    </div>
+                    <input type="text" name="id" id="Id" style="display:none">
+                    <div class="me_btn">
+                        <button type="submit">新增品牌</button>
+                        <button type="button" class="exit">退出</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script src="/js/jquery.min.js"></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.main-left ul li:eq(3) a').css('background','#202F41');
+        // var str = location.search.split('?')[1];
+        var page = 1;
+        var pageSize = 4;
+        // $.ajax('/brand/list',{page:page,pageSize:5},function(res){
+        //     console.log(res);
+        // })
+        function showBrand(){
+            $.ajax({
+                type: "post",
+                url: '/brand/list',
+                data: { page: page, pageSize: pageSize },
+                success: function (res) {
+                    var tr = '';
+                    for (var i = 0; i < res[0].length; i++) {
+                        tr += `
+                        <tr>
+                            <td>${res[0][i]._id}</td>
+                            <td><img src="/brands/${res[0][i].src}" alt=""></td>
+                            <td>${res[0][i].brand}</td>
+                            <td>
+                                <a href="#" class='dele'>删除</a>
+                            </td>
+                        </tr>
+                    `;
+                    }
+                    var li = '';
+                    $('#ttab').html(tr);
+                    var totalNum = Math.ceil(res[1] / pageSize);
+                    for (var i = 0; i < totalNum; i++) {
+                        li += `
+                        <li><a href="javascript:;">${i + 1}</a></li>
+                    `;
+                        $('.pageNum').html(li);
+                    }
+                }
+            });
+        }
+        showBrand();
+        $('.pageNum').on("click",'a',function(){
+            console.log($(this));
+            page = parseInt($(this).text());
+            showBrand();
+        })
+        $('#ttab').on('click','.dele',function(){
+            console.log($(this));
+            var dele = confirm('确认删除？');
+            if(dele){
+                var id = $(this).parents('tr').children().eq(0).text();
+                // console.log(id);
+                $(this).attr('href', `/brand/dele?id=${id}`)
+            }
+        });
+
+        $('.addBrand').click(function(){
+            $('.add').show();
+        });
+        $('.exit').click(function(){
+            $('.cloth').hide()
+        })
+    });
+</script>

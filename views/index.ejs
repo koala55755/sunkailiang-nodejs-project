@@ -4,9 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/index.css">
+  <link rel="stylesheet" href="/css/style.css">
   <title>Document</title>
 </head>
 <body>
-  
+      <div class="wrap">
+        <%- include('./common/main-left.ejs',{nickname:nickname,isAdmin:isAdmin}) %>
+        <div class="main-right">
+          <%- include('./common/r-header.ejs' , {isAdmin:isAdmin}) %>
+          <div class="r-main"> 
+            
+          </div>
+        </div>
+      </div>
 </body>
 </html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+<script>
+  $('.main-left ul li:eq(0) a').css('background', '#202F41');
+</script>

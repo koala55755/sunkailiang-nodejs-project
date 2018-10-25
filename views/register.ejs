@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/register.css">
+    <title>Document</title>
+</head>
+<body>
+   <div class="container">
+       <div class="row top">
+            <div class="col-md-9">
+                <h1>XX - 后台管理系统</h1>
+                <form class="form-horizontal" action="/users/register" method="POST">
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">用户名:</label>
+                        <div class="col-sm-7 unify">
+                            <input type="text" class="form-control" name="username" id="username" placeholder="请输入5-12位的用户名">
+                            <span class="error username-error" style="display:none">请输入5-12位字符的用户名</span>
+                            <!-- <span class="error" style="display:none">用户名已存在</span> -->
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">密码:</label>
+                        <div class="col-sm-7 unify">
+                            <input type="password" class="form-control" name="password" id="password" placeholder="请输入6-14位非特殊字符的密码">
+                            <span class="error password-error" style="display:none">请输入6-14位非特殊字符的密码</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">确认密码:</label>
+                        <div class="col-sm-7 unify">
+                            <input type="password" class="form-control" name="repeatPwd" id="repeatPwd" placeholder="请重复输入密码">
+                            <span class="error repeatPwd-error" style="display:none">密码与上次输入的不符</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">昵称:</label>
+                        <div class="col-sm-7 unify">
+                            <input type="text" class="form-control" name="nickname" id="nickname" placeholder="请输入昵称">
+                            <span class="error nickname-error" style="display:none">请输入两位以上不含空格字符的昵称</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">手机号码:</label>
+                        <div class="col-sm-7 unify">
+                            <input type="text" class="form-control" name="phone" id="phone" placeholder="请输入手机号码">
+                            <span class="error phone-error" style="display:none">请输入正确的手机号码</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">管理员</label>
+                        <div class="col-sm-7">
+                            <input type="radio" name="isAdmin" value="1" class="radio_one"> yes &nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="isAdmin" value="0" checked> no
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-5 col-sm-10">
+                            <button type="button" class="btn btn-primary btn_reg" id="btn1">注册</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+       </div>
+   </div>
+</body>
+</html> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/register.js"></script>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/userManager.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="wrap">
+        <%- include('./common/main-left.ejs',{nickname:nickname,isAdmin:isAdmin}) %>
+        <div class="main-right">
+            <%- include('./common/r-header.ejs' , {isAdmin:isAdmin}) %>
+            <div class="r-main">
+                <div class="tab">
+                    <form action="/users/userSeek" id="seek" method="GET">
+                        <input type="text" name="username" placeholder="请通过用户名查找">
+                        <button type="submit">搜索</button>
+                    </form>
+                    <table class="table-striped" style="border:1px solid #f6f6f6">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>用户名</th>
+                                <th>用户昵称</th>
+                                <th>手机号码</th>
+                                <th>性别</th>
+                                <th>年龄</th>
+                                <th>是否为管理员</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <% for (var i = 0; i < userList.length; i++) { %>
+                                <tr>
+                                    <td><%= userList[i]._id %></td>
+                                    <td style="width:120px"><%= userList[i].username %></td>
+                                    <td><%= userList[i].nickname %></td>
+                                    <td><%= userList[i].phone %></td>
+                                    <td><%= userList[i].sex || '-' %></td>
+                                    <td><%= userList[i].age || '-' %></td>
+                                    <td><%= parseInt(userList[i].is_admin) ? '是' : '否' %></td>
+                                    <td>
+                                    <!--
+                                        1. 如果当前登录的管理员跟这条记录匹配。那么可以修改，
+                                        2. 如果这条记录是管理员记录的话，那么不可以删除
+                                    -->
+                                    <% if (userList[i].username === username) { %>
+                                        <a class="gai" style="cursor:pointer">修改</a>
+                                        <a href="javascript:;" style="cursor: not-allowed;color:#929292">删除</a>
+                                    <% } else if (parseInt(userList[i].is_admin)) { %>
+                                        <a href="javascript:;" style="cursor: not-allowed;color:#929292">修改</a>
+                                        <a href="javascript:;" style="cursor: not-allowed;color:#929292">删除</a>
+                                    <% } else { %>
+                                        <a class="gai" style="cursor:pointer">修改</a>
+                                        <a class="del" style="cursor: pointer;">删除</a>
+                                    <% } %>
+
+                                    </td>
+                                </tr>
+                             <% } %>
+                        </tbody>
+                    </table>
+                    <ul class="pageNum">
+                       <% if ( exit == 0) { %>
+                            <% for(var i = 1 ; i <= totalPage ; i++){ %>
+                                <li><a href="/userManager?page=<%= i %>"><%= i %></a></li>
+                            <% } %>
+                       <% }else{ %>
+                            <li><a href="/userManager">返回</a></li>
+                       <% } %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="cloth">
+            <div class="upData">
+                <form action="/users/upData" method="POST">
+                    <div class="username">
+                        <label>用&nbsp;&nbsp;户&nbsp;&nbsp;名</label>
+                        <input type="text" name="username" disabled="disabled">
+                    </div>
+                    <div class="nickname">
+                        <label>昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</label>
+                        <input type="text" name="nickname">
+                    </div>
+                    <div class="phone">
+                        <label>手机号码</label>
+                        <input type="text" name="phone">
+                    </div>
+                    <div class="age">
+                        <label>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄</label>
+                        <input type="text" name="age">
+                    </div>
+                    <div class="sex">
+                        <label>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</label>
+                        <input type="radio" name="sex" class="sex" value='0' >男
+                        <input type="radio" name="sex" class="sex" value="1">女
+                    </div>
+                        <input type="text" name="id" id="Id" style="display:none">
+                    <div class="me_btn">
+                        <button type="submit">确认修改</button>
+                        <button type="button" class="exit">退出</button>
+                    </div>   
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
+
+</body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $('.del').click(function(){
+        var del = confirm('确认删除？');
+        if(del){
+            var id = $(this).parent().parent().children().eq(0).text();
+            $(this).attr('href',`/users/del?id=${id}`);
+        }
+    });
+    $('.gai').click(function(){
+        var id = $(this).parent().parent().children().eq(0).text()
+        var username = $(this).parent().parent().children().eq(1).text();
+        var nickname = $(this).parent().parent().children().eq(2).text();
+        var phone = $(this).parent().parent().children().eq(3).text();
+        var sex = $(this).parent().parent().children().eq(4).text();
+        var age = $(this).parent().parent().children().eq(5).text();
+        $('.username input').val(username);
+        $('.nickname input').val(nickname);
+        $('.phone input').val(phone);
+        $('#Id').val(id);
+        // $('.sex input').val(sex);
+        $('.age input').val(age);
+        if(sex == '-' || sex == '男'){
+            $('.sex input:first').attr('checked','checked');
+        }else{
+            $('.sex input:last').attr('checked', 'checked');
+        }
+        $('.cloth').show();
+        var id = $(this).parent().parent().children().eq(0).text();
+    });
+    $('.exit').click(function(){
+        $('.cloth').hide();
+    });
+    $('.main-left ul li:eq(1) a').css('background','#202F41');
+</script>
