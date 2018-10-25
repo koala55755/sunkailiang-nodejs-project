@@ -56,7 +56,7 @@
                     </div>
                     <input type="text" name="id" id="Id" style="display:none">
                     <div class="me_btn">
-                        <button type="submit">新增品牌</button>
+                        <button type="button" class="addBrand_btn">新增品牌</button>
                         <button type="button" class="exit">退出</button>
                     </div>
                 </form>
@@ -71,13 +71,24 @@
 <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
-        $('.main-left ul li:eq(3) a').css('background','#202F41');
+        $('.brands').css('background', '#202F41');
         // var str = location.search.split('?')[1];
         var page = 1;
         var pageSize = 4;
         // $.ajax('/brand/list',{page:page,pageSize:5},function(res){
         //     console.log(res);
         // })
+
+        $('.addBrand_btn').click(function(){
+            if($('.brand input').val() == '' || $('.phoneImg input').val() == ''){
+                alert('请正确填写信息后提交');
+            }else{
+                $('.add form').submit();
+            }
+        });
+
+
+
         function showBrand(){
             $.ajax({
                 type: "post",

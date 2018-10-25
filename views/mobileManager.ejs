@@ -87,7 +87,7 @@
 
         <div class="cloth add">
             <div class="upData">
-                <form action="/mobile/addData" method="POST" enctype="multipart/form-data">
+                <form action="/mobile/addData" method="POST" enctype="multipart/form-data" id="mobileForm">
                     <!-- enctype:规定表单提交时的编码类型 -->
                     <div class="phoneName">
                         <label>手机名称</label>
@@ -113,7 +113,7 @@
                     </div>
                     <input type="text" name="id" id="Id" style="display:none">
                     <div class="me_btn">
-                        <button type="submit">新增手机</button>
+                        <button type="button" class="addMobile_btn">新增手机</button>
                         <button type="button" class="exit">退出</button>
                     </div>
                 </form>
@@ -129,7 +129,8 @@
 <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
-        $('.main-left ul li:eq(2) a').css('background', '#202F41');
+        console.log(location.href);
+        $('.mobiles').css('background', '#202F41');
         $('.gai').click(function () {
             $('.updata').show();
         });
@@ -193,6 +194,17 @@
                 }
             });
         });
+
+        $('.addMobile_btn').click(function(){
+            console.log($('.add .phoneName input').val() , $('.add .QA_price input ').val() , $('.add .Sec_price input ').val(),  $('.add .phoneImg input ').val(), )
+            if($('.add .phoneName input').val() == '' || $('.add .QA_price input ').val() == '' || $('.add .Sec_price input ').val() == '' || $('.add .phoneImg input ').val() == ''){
+                alert('请正确填写信息后提交');
+            }else{
+                $('#mobileForm').submit();
+            }
+        });
+
+
         $.ajax({
             type:'post',
             url:'/mobile/brandsData',

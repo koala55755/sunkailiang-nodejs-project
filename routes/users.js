@@ -83,7 +83,7 @@ router.get('/userSeek',function(req,res){
           userList: data.userList,
           totalPage: data.totalPage,
           page: data.page,
-          exit : 1
+          // exit : 1
       });
     }
   });

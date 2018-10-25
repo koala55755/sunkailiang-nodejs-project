@@ -68,13 +68,9 @@
                         </tbody>
                     </table>
                     <ul class="pageNum">
-                       <% if ( exit == 0) { %>
                             <% for(var i = 1 ; i <= totalPage ; i++){ %>
                                 <li><a href="/userManager?page=<%= i %>"><%= i %></a></li>
                             <% } %>
-                       <% }else{ %>
-                            <li><a href="/userManager">返回</a></li>
-                       <% } %>
                     </ul>
                 </div>
             </div>
@@ -151,5 +147,6 @@
     $('.exit').click(function(){
         $('.cloth').hide();
     });
-    $('.main-left ul li:eq(1) a').css('background','#202F41');
+    console.log(location.href);
+    $('.users').css('background','#202F41');
 </script>

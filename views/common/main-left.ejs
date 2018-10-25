@@ -2,12 +2,12 @@
     <div class="head-port"></div>
     <h1>xx-后台管理系统</h1>
     <ul>
-        <li><a href="/">首页</a></li>
+        <li><a href="/" class="index">首页</a></li>
         <% if ( isAdmin == '管理员'){ %>
-        <li><a href="/userManager">用户管理</a></li>
+        <li><a href="/userManager" class="users">用户管理</a></li>
         <% }%>
-        <li><a href="/mobileManager">手机列表</a></li>
-        <li><a href="/brandManager">品牌管理</a></li>
+        <li><a href="/mobileManager" class="mobiles">手机列表</a></li>
+        <li><a href="/brandManager" class="brands">品牌管理</a></li>
         <li><a href="/users/logout">退出登录</a></li>
     </ul>
 </div>

@@ -59,7 +59,7 @@ router.get('/userManager',function(req,res){
 // 手机管理
 router.get('/mobileManager', function (req, res) {
   //同首页,需要判断是否是用户登录,判断用户是否是管理员
-  if (req.cookies.username && parseInt(req.cookies.isAdmin)) {
+  if (req.cookies.username) {
     res.render('mobileManager',{
       username : req.cookies.username,
       nickname : req.cookies.nickname,
@@ -73,7 +73,7 @@ router.get('/mobileManager', function (req, res) {
 
 //品牌管理
 router.get('/brandManager',function(req,res){
-  if (req.cookies.username && parseInt(req.cookies.isAdmin)){
+  if (req.cookies.username){
     res.render('brandManager',{
       username: req.cookies.username,
       nickname: req.cookies.nickname,

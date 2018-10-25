@@ -173,7 +173,8 @@ const usersModel = {
                 cb({ code: -100, msg: '连接数据库失败' });
             } else {
                 var db = client.db('test');
-                db.collection('users').find({username:data.username}).toArray(function(err,data){
+                var usernameReg = new RegExp(data.username);
+                db.collection('users').find({ username: usernameReg}).toArray(function(err,data){
                     if(err){
                         cb({ code: -100, msg: '连接数据库失败'});
                     }else{
