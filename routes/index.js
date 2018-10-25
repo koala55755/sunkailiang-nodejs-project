@@ -47,7 +47,6 @@ router.get('/userManager',function(req,res){
           userList: data.userList,
           totalPage: data.totalPage,
           page: data.page,
-          exit : 0
         });
       }
     });

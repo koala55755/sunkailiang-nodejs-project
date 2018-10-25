@@ -37,7 +37,7 @@ router.post('/register',function(req,res){
 
 //登录
 router.post('/login',function(req,res){
-  console.log(req.body);
+  // console.log(req.body);
   usersModel.login(req.body,function(err,data){
     if(err){
       res.render('werror',err)
@@ -72,11 +72,14 @@ router.get('/logout',function(req,res){
 
 //搜索功能
 router.get('/userSeek',function(req,res){
-  usersModel.userSeek(req.query,function(err,data){
-    if(err){
-      res.render('werror',err);
-    }else{
-      res.render('userManager',{  
+  if (req.query.username == ''){
+    res.redirect('/userManager');
+  }else{
+    usersModel.userSeek(req.query, function (err, data) {
+      if (err) {
+        res.render('werror', err);
+      } else {
+        res.render('userManager', {
           username: req.cookies.username,
           nickname: req.cookies.nickname,
           isAdmin: parseInt(req.cookies.isAdmin) ? '管理员' : '普通用户',
@@ -84,9 +87,11 @@ router.get('/userSeek',function(req,res){
           totalPage: data.totalPage,
           page: data.page,
           // exit : 1
-      });
-    }
-  });
+        });
+      }
+    });
+  }
+  
 });
 
 
